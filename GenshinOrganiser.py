@@ -41,18 +41,6 @@ class Character: #character class to hold character data and create og CSV purrr
             character_table.to_csv('genshinCharacters.csv') #then a pd data frame to  csv   
         return pd.read_csv('genshinCharacters.csv') #returns the resultant so it can be used if necessay    
 
-# Creates CSV if genshinCharacaters.csv doesnt exist
-characters = [ 
-    Character("Traveller", "Anemo", 4,1, 911, 17, "Gale Blade", "Dandelion Breeze", "Mondstadt", "Sword"),
-    Character("Kaeya", "Cyro", 4, 1,975, 18, "Frostgnaw", "Glacial Waltz", "Mondstadt", "Sword"),
-    Character("Amber", "Pyro", 4, 1, 793, 18, "Explosive Puppet", "Fiery Rain", "Mondstadt", "Bow"),
-    Character("Neuvillette", "Hydro", 5, 1, 900, 20, "O Tears, I Shall Repay", "O Tides, I Have Returned", "Fontaine", "Catalyst")
-]
-
-
-Character.make_characters_csv() #needed to  be called like so important esp if no character.csv file exists for the first call of the program
-Character.character_count = len(pd.read_csv('genshinCharacters.csv')) #calculating the length of the csv file to see the total character count
-
 # GenshinSorter class with treeview stuff yahhh baby
 class GenshinSorter:
     def __init__(self, genshin_window):
@@ -578,13 +566,23 @@ class IntroPage(GenshinSorter): #inheritance yurrrrrrrrrrrrrrrr
         element_chart = FigureCanvasTkAgg(fig, frameChart)#embeds the figure into tkinter 
         element_chart.get_tk_widget().pack(anchor="center") 
 
-genshin_window = tk.Tk() #main  app so crazy i can call this an app yurr
-intro_page = IntroPage(genshin_window)  #using IntroPage instead of GenshinSorter 
-intro_page.show_page(intro_page.page1) #shows the first page initially
-genshin_window.mainloop() #runs the application
 
-# if __name__ == "__main__":
+if __name__ == "__main__":
+    # Creates CSV if genshinCharacaters.csv doesnt exist
+    characters = [ 
+        Character("Traveller", "Anemo", 4,1, 911, 17, "Gale Blade", "Dandelion Breeze", "Mondstadt", "Sword"),
+        Character("Kaeya", "Cyro", 4, 1,975, 18, "Frostgnaw", "Glacial Waltz", "Mondstadt", "Sword"),
+        Character("Amber", "Pyro", 4, 1, 793, 18, "Explosive Puppet", "Fiery Rain", "Mondstadt", "Bow"),
+        Character("Neuvillette", "Hydro", 5, 1, 900, 20, "O Tears, I Shall Repay", "O Tides, I Have Returned", "Fontaine", "Catalyst")
+    ]
 
-#     line_df = read_line_csv()  # Calls function so to be used in plot_line()
-#     plot_line()
-#     print(count_columns_pandas(csv_in_use))
+
+    Character.make_characters_csv() #needed to  be called like so important esp if no character.csv file exists for the first call of the program
+    Character.character_count = len(pd.read_csv('genshinCharacters.csv')) #calculating the length of the csv file to see the total character count
+    genshin_window = tk.Tk() #main  app so crazy i can call this an app yurr
+    intro_page = IntroPage(genshin_window)  #using IntroPage instead of GenshinSorter 
+    intro_page.show_page(intro_page.page1) #shows the first page initially
+    genshin_window.mainloop() #runs the application
+
+
+

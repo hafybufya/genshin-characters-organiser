@@ -1,5 +1,6 @@
-,Name,Element,Character Star,Character Level,Max HP,Base ATK,Elemental Skill,Elemental Burst,Region,Weapon
-0,Traveller,Anemo,4,1,911,17,Gale Blade,Dandelion Breeze,Mondstadt,Sword
-1,Kaeya,Cyro,4,1,975,18,Frostgnaw,Glacial Waltz,Mondstadt,Sword
-2,Amber,Pyro,4,1,793,18,Explosive Puppet,Fiery Rain,Mondstadt,Bow
-3,Neuvillette,Hydro,5,1,900,20,"O Tears, I Shall Repay","O Tides, I Have Returned",Fontaine,Catalyst
+Name,Element,Character Star,Character Level,Max HP,Base ATK,Elemental Skill,Elemental Burst,Region,Weapon
+Traveller,Anemo,4,1,911,17,Gale Blade,Dandelion Breeze,Mondstadt,Sword
+Kaeya,Cyro,4,1,975,18,Frostgnaw,Glacial Waltz,Mondstadt,Sword
+Amber,Pyro,4,1,793,18,Explosive Puppet,Fiery Rain,Mondstadt,Bow
+Neuvillette,Hydrawr,5,1,900,20,"O Tears, I Shall Repay","O Tides, I Have Returned",Fontaine,Catalyst
+Chasxa,Anemo,5,45,900,19,Anemo Skills,Anemo Burst,Natlan,Bow
