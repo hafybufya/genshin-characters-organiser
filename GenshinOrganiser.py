@@ -281,83 +281,67 @@ class GenshinSorter:
         #packs the selected page to fill the whole window
         page.pack(fill="both", expand=True)
 
+# ---------------------------------------------------------------------
+# FUNCTION: update character data
+# ---------------------------------------------------------------------
+
     def update_character(self):
-        """Connected to the update button and it pastes the data user has selected so it can be updated"""           
-        if not (self.name_entry.get() and self.element_entry.get() and self.star_entry.get() and self.level_entry.get() and self.hp_entry.get() and self.atk_entry.get() and self.skill_entry.get() and self.burst_entry.get() and self.region_entry.get() and self.weapon_entry.get()):
-            # Check if all fields are filled #If any field is empty, show an error message and return
-            self.error_label_3.config(text="Please fill all fields!!.")
-            self.page3.after(3000, lambda: self.error_label_3.config(text="")) #error shown for only 3 seconds before dissappearing as text is reset to nothing
-            return  #stop the function from running
+        """Connected to the update button and it pastes the data user has selected so it can be updated"""  
         
-        if not (self.star_entry.get().isdigit() and self.level_entry.get().isdigit() and self.hp_entry.get().isdigit() and self.atk_entry.get().isdigit()):
-            self.error_label_3.config(text="'Star', 'Level' , 'Max HP' and 'Base ATK' should all be numbers.") #validation and makes sure number boxes have only numbers in them
-            self.page3.after(4000, lambda: self.error_label_3.config(text="")) #error shown for only 4 seconds before dissappearing as text is reset to nothing
-            return  #stop the function from running
-    
-        selected = self.tree.focus() #focus is what the mouse has touched and whas illunitated
+       # --- List of character trait lists ---
+        character_traits = [
+        self.name_entry, self.element_entry, self.star_entry, self.level_entry,
+        self.hp_entry, self.atk_entry, self.skill_entry, self.burst_entry,
+        self.region_entry, self.weapon_entry
+    ] 
+        # For validating numeric fields
+        numeric_traits = [self.star_entry, self.level_entry, self.hp_entry, self.atk_entry]
+        
+        # --- Validate empty fields --- 
+        if any(not trait.get() for trait in character_traits):
+
+            #If any field is empty, show an error message and return
+            self.error_label_3.config(text="Please fill all fields!!.")
+            self.page3.after(3000, lambda: self.error_label_3.config(text=""))
+            return # Stop the function from running
+
+        # --- Validate numeric fields ---
+        if any(not trait.get().isdigit() for trait in numeric_traits):
+            self.error_label_3.config(text="'Star', 'Level', 'Max HP' and 'Base ATK' should all be numbers.")
+            # Error shown for only 4 seconds before dissappearing as text is reset to nothing
+            self.page3.after(4000, lambda: self.error_label_3.config(text="")) 
+            return  # Stop the function from running
+
+        # --- Update the selected row ---
+        selected = self.tree.focus() # Focus is what the mouse has touched and is illuminated
         self.tree.item(selected, text="", values=(self.name_entry.get(), self.element_entry.get(), self.star_entry.get(), self.level_entry.get(), self.hp_entry.get(), self.atk_entry.get(), self.skill_entry.get(), self.burst_entry.get(), self.region_entry.get(), self.weapon_entry.get()))
-        #deletes all entry box data
-        tree_entryboxes = (self.name_entry,self.element_entry, self.star_entry, self.level_entry,
-                   self.hp_entry,self.atk_entry,self.skill_entry, self.burst_entry, self.burst_entry,self.region_entry, self.weapon_entry )
-        for options in tree_entryboxes:
-            options.delete(0, END)
 
-        column_a_list = [] #this is the name column
-        column_b_list = []
-        column_c_list = []
-        column_d_list = []
-        column_e_list = []
-        column_f_list = []
-        column_g_list = []
-        column_h_list = []
-        column_i_list = []
-        column_j_list = [] #finally this is thw weapon column   
-        for child in self.tree.get_children():
-            column_a_list.append(self.tree.item(child)["values"][0])  #counts from name column not the ghost column         
-            column_b_list.append(self.tree.item(child)["values"][1])  
-            column_c_list.append(self.tree.item(child)["values"][2])  
-            column_d_list.append(self.tree.item(child)["values"][3])
-            column_e_list.append(self.tree.item(child)["values"][4])            
-            column_f_list.append(self.tree.item(child)["values"][5])  
-            column_g_list.append(self.tree.item(child)["values"][6])  
-            column_h_list.append(self.tree.item(child)["values"][7]) 
-            column_i_list.append(self.tree.item(child)["values"][8])            
-            column_j_list.append(self.tree.item(child)["values"][9])  #again this is the weapon column   
-        #putting values into a dictionairy with the headings as the key and the rows containing data from the rows as the values
-        full_treeview_data_dict = {'Name': column_a_list, 'Element': column_b_list, 'Character Star': column_c_list, 'Character Level': column_d_list, "Max HP":column_e_list, "Base ATK": column_f_list, "Elemental Skill": column_g_list, "Elemental Burst": column_h_list, "Region":column_i_list, "Weapon": column_j_list}
+        values = [traits.get() for traits in character_traits]
+        self.tree.item(selected, text="", values=values)
+
+        # --- Clear the entry boxes ---
+        for traits in character_traits:
+           traits.delete(0, END)
+
+
+        # --- Extract all rows from treeview in one loop ---
+        headings = ["Name", "Element", "Character Star", "Character Level",
+                    "Max HP", "Base ATK", "Elemental Skill", "Elemental Burst",
+                    "Region", "Weapon"]
+            
+        # --- Dictionary built using list comprehensions ---
+        full_treeview_data_dict = {
+            headings[i]: [self.tree.item(child)["values"][i] for child in self.tree.get_children()]
+            for i in range(len(headings))
+        }
+
+        # --- Save to CSV ---
         treeview_df = pd.DataFrame.from_dict(full_treeview_data_dict)
         treeview_df.to_csv("genshinCharacters.csv", index = False)
+  
+        # --- Success message ---
         self.error_label_3.config(text="RECORD UPDATED.")
         self.page3.after(3000, lambda: self.error_label_3.config(text=""))
-
-        column_a_list = [] #this is the name column
-        column_b_list = []
-        column_c_list = []
-        column_d_list = []
-        column_e_list = []
-        column_f_list = []
-        column_g_list = []
-        column_h_list = []
-        column_i_list = []
-        column_j_list = [] #finally this is thw weapon column   
-        for child in self.tree.get_children():
-            column_a_list.append(self.tree.item(child)["values"][0])  #counts from name column not the ghost column         
-            column_b_list.append(self.tree.item(child)["values"][1])  
-            column_c_list.append(self.tree.item(child)["values"][2])  
-            column_d_list.append(self.tree.item(child)["values"][3])
-            column_e_list.append(self.tree.item(child)["values"][4])            
-            column_f_list.append(self.tree.item(child)["values"][5])  
-            column_g_list.append(self.tree.item(child)["values"][6])  
-            column_h_list.append(self.tree.item(child)["values"][7]) 
-            column_i_list.append(self.tree.item(child)["values"][8])            
-            column_j_list.append(self.tree.item(child)["values"][9])  #again this is the weapon column   
-        #putting values into a dictionairy with the headings as the key and the rows containing data from the rows as the values
-        full_treeview_data_dict = {'Name': column_a_list, 'Element': column_b_list, 'Character Star': column_c_list, 'Character Level': column_d_list, "Max HP":column_e_list, "Base ATK": column_f_list, "Elemental Skill": column_g_list, "Elemental Burst": column_h_list, "Region":column_i_list, "Weapon": column_j_list}
-        treeview_df = pd.DataFrame.from_dict(full_treeview_data_dict)
-        treeview_df.to_csv("genshinCharacters.csv", index = False)
-        self.error_label_3.config(text="RECORD UPDATED.")
-        self.page3.after(3000, lambda: self.error_label_3.config(text=""))
-
 
     def delete_character(self):
         self.tree.delete(self.tree.selection()[0])
