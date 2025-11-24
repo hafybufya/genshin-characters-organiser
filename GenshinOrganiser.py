@@ -323,7 +323,6 @@ class GenshinSorter:
         for traits in character_traits:
            traits.delete(0, END)
 
-
         # --- Extract all rows from treeview in one loop ---
         headings = ["Name", "Element", "Character Star", "Character Level",
                     "Max HP", "Base ATK", "Elemental Skill", "Elemental Burst",
@@ -368,7 +367,6 @@ class GenshinSorter:
 
     def sort_characters(self):
         
-
         # --- Extract all rows from treeview in one loop ---
         headings = ["Name", "Element", "Character Star", "Character Level",
                     "Max HP", "Base ATK", "Elemental Skill", "Elemental Burst",
