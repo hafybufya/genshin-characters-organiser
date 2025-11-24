@@ -287,7 +287,7 @@ class GenshinSorter:
 
     def update_character(self):
         """Connected to the update button and it pastes the data user has selected so it can be updated"""  
-        
+      
        # --- List of character trait lists ---
         character_traits = [
         self.name_entry, self.element_entry, self.star_entry, self.level_entry,
@@ -344,84 +344,52 @@ class GenshinSorter:
         self.page3.after(3000, lambda: self.error_label_3.config(text=""))
 
     def delete_character(self):
-        self.tree.delete(self.tree.selection()[0])
-        column_a_list = [] #this is the name column
-        column_b_list = []
-        column_c_list = []
-        column_d_list = []
-        column_e_list = []
-        column_f_list = []
-        column_g_list = []
-        column_h_list = []
-        column_i_list = []
-        column_j_list = [] #finally this is thw weapon column
-    
-        for child in self.tree.get_children():
-            column_a_list.append(self.tree.item(child)["values"][0])  #counts from name column not the ghost column         
-            column_b_list.append(self.tree.item(child)["values"][1])  
-            column_c_list.append(self.tree.item(child)["values"][2])  
-            column_d_list.append(self.tree.item(child)["values"][3])
-            column_e_list.append(self.tree.item(child)["values"][4])            
-            column_f_list.append(self.tree.item(child)["values"][5])  
-            column_g_list.append(self.tree.item(child)["values"][6])  
-            column_h_list.append(self.tree.item(child)["values"][7]) 
-            column_i_list.append(self.tree.item(child)["values"][8])            
-            column_j_list.append(self.tree.item(child)["values"][9])  #again this is the weapon column
         
-        #putting values into a dictionairy with the headings as the key and the rows containing data from the rows as the values
-        full_treeview_data_dict = {'Name': column_a_list, 'Element': column_b_list, 'Character Star': column_c_list, 'Character Level': column_d_list, 
-                                   "Max HP":column_e_list, "Base ATK": column_f_list, "Elemental Skill": column_g_list, "Elemental Burst": column_h_list, 
-                                   "Region":column_i_list, "Weapon": column_j_list}
+        self.tree.delete(self.tree.selection()[0])
+        # --- Extract all rows from treeview in one loop ---
+        headings = ["Name", "Element", "Character Star", "Character Level",
+                    "Max HP", "Base ATK", "Elemental Skill", "Elemental Burst",
+                    "Region", "Weapon"]
+        
+        # --- Dictionary built using list comprehensions ---
+        full_treeview_data_dict = {
+            headings[i]: [self.tree.item(child)["values"][i] for child in self.tree.get_children()]
+            for i in range(len(headings))
+        }
+     
+        # --- Save to CSV ---
         treeview_df = pd.DataFrame.from_dict(full_treeview_data_dict)
         treeview_df.to_csv("genshinCharacters.csv", index = False)
+
+        # --- Feedback message ---
         self.error_label_3.config(text="CHARACTER DELETED")
         self.page3.after(3000, lambda: self.error_label_3.config(text="")) #error shown for only 3 seconds before dissappearing as text is reset to nothing
 
-    def sort_characters(self):
-        # empty lists to put the stuff of each column in to
-        column_a_list = []  # this is the name column
-        column_b_list = []
-        column_c_list = []
-        column_d_list = []
-        column_e_list = []
-        column_f_list = []
-        column_g_list = []
-        column_h_list = []
-        column_i_list = []
-        column_j_list = []  # finally this is thw weapon column
-        for child in self.tree_page2.get_children():
-            column_a_list.append(self.tree_page2.item(child)["values"][0])  # counts from name column not the ghost column         
-            column_b_list.append(self.tree_page2.item(child)["values"][1])  
-            column_c_list.append(self.tree_page2.item(child)["values"][2])  
-            column_d_list.append(self.tree_page2.item(child)["values"][3])
-            column_e_list.append(self.tree_page2.item(child)["values"][4])            
-            column_f_list.append(self.tree_page2.item(child)["values"][5])  
-            column_g_list.append(self.tree_page2.item(child)["values"][6])  
-            column_h_list.append(self.tree_page2.item(child)["values"][7]) 
-            column_i_list.append(self.tree_page2.item(child)["values"][8])            
-            column_j_list.append(self.tree_page2.item(child)["values"][9])  # again this is the weapon column
 
-        #putting values into a dictionary with the headings as the key and the rows containing data from the rows as the values
+    def sort_characters(self):
+        
+
+        # --- Extract all rows from treeview in one loop ---
+        headings = ["Name", "Element", "Character Star", "Character Level",
+                    "Max HP", "Base ATK", "Elemental Skill", "Elemental Burst",
+                    "Region", "Weapon"]
+        
+                # --- Dictionary built using list comprehensions ---
         full_treeview_data_dict = {
-            'Name': column_a_list,
-            'Element': column_b_list,
-            'Character Star': column_c_list,
-            'Character Level': column_d_list,
-            "Max HP": column_e_list,
-            "Base ATK": column_f_list,
-            "Elemental Skill": column_g_list,
-            "Elemental Burst": column_h_list,
-            "Region": column_i_list,
-            "Weapon": column_j_list
+            headings[i]: [self.tree.item(child)["values"][i] for child in self.tree.get_children()]
+            for i in range(len(headings))
         }
-        #create a dataframe from the dictionary
+
+       # --- Create DataFrame ---
         treeview_df = pd.DataFrame.from_dict(full_treeview_data_dict)
+
         unsorted_characters = treeview_df
-        #the way this tiny line of codes abscence gave me crazy errors dawg
-        sorted_characters = unsorted_characters  #default to unsorted if no option is selected
-        #checks the selected option and apply sorting
-        if self.option.get() == "--":#this if statement is giving the illusion of choice lol
-            sorted_characters = unsorted_characters  # no sorting if the default option is selected
+        
+        sorted_characters = unsorted_characters  # Default to unsorted if no option is selected
+       
+       # --- Applies sorting ---  
+        if self.option.get() == "--": # Default
+            sorted_characters = unsorted_characters  # No sorting if the default option is selected
         if self.option.get() == "Name":
             sorted_characters = unsorted_characters.sort_values(by=["Name"], ascending=True)
         elif self.option.get() == "Level":
@@ -430,15 +398,14 @@ class GenshinSorter:
             sorted_characters = unsorted_characters.sort_values(by=["Max HP"], ascending=False)
         elif self.option.get() == "ATK":
             sorted_characters = unsorted_characters.sort_values(by=["Base ATK"], ascending=False)
-        #refill the treeview with sorted data
-        for row in self.tree_page2.get_children(): #empties the treeview 
+     
+        # --- Refill the treeview with sorted data ---  
+        for row in self.tree_page2.get_children(): # Empties the treeview 
             self.tree_page2.delete(row)
-        for _, row in sorted_characters.iterrows():#refills the treeview with sorted data
-            self.tree_page2.insert("", "end", values=(
-                row['Name'], row['Element'], row['Character Star'], row['Character Level'],
-                row['Max HP'], row['Base ATK'], row['Elemental Skill'],
-                row['Elemental Burst'], row["Region"], row["Weapon"]
-            ))
+        for _, row in sorted_characters.iterrows():
+            self.tree_page2.insert("", "end", values=[row[col] for col in headings])
+
+
 
     def clear_boxes(self):
         #deletes all entry box data
