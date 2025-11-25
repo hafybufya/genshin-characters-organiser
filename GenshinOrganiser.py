@@ -362,7 +362,8 @@ class GenshinSorter:
 
         # --- Feedback message ---
         self.error_label_3.config(text="CHARACTER DELETED")
-        self.page3.after(3000, lambda: self.error_label_3.config(text="")) #error shown for only 3 seconds before dissappearing as text is reset to nothing
+        # Error shown for only 3 seconds before dissappearing as text is reset to nothing 
+        self.page3.after(3000, lambda: self.error_label_3.config(text=""))
 
 
     def sort_characters(self):
@@ -372,7 +373,7 @@ class GenshinSorter:
                     "Max HP", "Base ATK", "Elemental Skill", "Elemental Burst",
                     "Region", "Weapon"]
         
-                # --- Dictionary built using list comprehensions ---
+        # --- Dictionary built using list comprehensions ---
         full_treeview_data_dict = {
             headings[i]: [self.tree.item(child)["values"][i] for child in self.tree.get_children()]
             for i in range(len(headings))
@@ -406,10 +407,11 @@ class GenshinSorter:
 
 
     def clear_boxes(self):
-        #deletes all entry box data
+        # --- Lists all entry box data --- 
         tree_entryboxes = (self.name_entry,self.element_entry, self.star_entry, self.level_entry,
                    self.hp_entry,self.atk_entry,self.skill_entry, self.burst_entry, self.burst_entry,self.region_entry, self.weapon_entry )
-        for options in tree_entryboxes: #iterates # loop knowledge ate
+         # --- Deletes all entry box data --- 
+        for options in tree_entryboxes:
             options.delete(0, END)
        
     def search_character(self):
@@ -436,25 +438,21 @@ class GenshinSorter:
 
 
     def select_character(self):
-        #clear entry boxes
+       # --- Lists all entry box data --- 
         tree_entryboxes = (self.name_entry,self.element_entry, self.star_entry, self.level_entry,
-                   self.hp_entry,self.atk_entry,self.skill_entry, self.burst_entry, self.burst_entry,self.region_entry, self.weapon_entry )
+                   self.hp_entry,self.atk_entry,self.skill_entry, self.burst_entry,self.region_entry, self.weapon_entry )
+      
+        # --- Deletes all entry box data --- 
         for options in tree_entryboxes:
             options.delete(0, END)
-        selected = self.tree.focus() #tells u whats focused or currently pressed on shows up as pink on my mac
-        #grabs values associated with record
-        #values is a tuple of the selected row dun da dunnn
-        values = self.tree.item(selected, 'values') #id (a number e.g. 1 for Traveller) and associated values
-        self.name_entry.insert(0, values[0]) #0 because i want to insert my king into the 0th position of the entry box
-        self.element_entry.insert(0, values[1])
-        self.star_entry.insert(0, values[2])
-        self.level_entry.insert(0, values[3])
-        self.hp_entry.insert(0, values[4])
-        self.atk_entry.insert(0, values[5])
-        self.skill_entry.insert(0, values[6])
-        self.burst_entry.insert(0, values[7])
-        self.region_entry.insert(0, values[8])
-        self.weapon_entry.insert(0, values[9])
+
+        # Get selected row
+        selected = self.tree.focus() # Focus = whats currently pressed on
+        values = self.tree.item(selected, "values") # Grabs values associated with record
+
+        # Fill entry boxes using a loop
+        for entry, value in zip(tree_entryboxes, values):
+            entry.insert(0, value)
 
     def add_character(self): #need this to show up on treeview too on page 2 maybe message to user to reload page to show addec charater to masterlist
         if not (self.name_entry.get() and self.element_entry.get() and self.star_entry.get() and self.level_entry.get() and self.hp_entry.get() and self.atk_entry.get() and self.skill_entry.get() and self.burst_entry.get() and self.region_entry.get() and self.weapon_entry.get()):
