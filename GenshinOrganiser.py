@@ -282,7 +282,7 @@ class GenshinSorter:
         page.pack(fill="both", expand=True)
 
 # ---------------------------------------------------------------------
-# FUNCTION: update character data
+# FUNCTION: Update character data
 # ---------------------------------------------------------------------
 
     def update_character(self):
@@ -342,6 +342,10 @@ class GenshinSorter:
         self.error_label_3.config(text="RECORD UPDATED.")
         self.page3.after(3000, lambda: self.error_label_3.config(text=""))
 
+# ---------------------------------------------------------------------
+# FUNCTION: Delete character data
+# ---------------------------------------------------------------------
+
     def delete_character(self):
         
         self.tree.delete(self.tree.selection()[0])
@@ -365,6 +369,9 @@ class GenshinSorter:
         # Error shown for only 3 seconds before dissappearing as text is reset to nothing 
         self.page3.after(3000, lambda: self.error_label_3.config(text=""))
 
+# ---------------------------------------------------------------------
+# FUNCTION: Sort character data
+# ---------------------------------------------------------------------
 
     def sort_characters(self):
         
@@ -404,7 +411,9 @@ class GenshinSorter:
         for _, row in sorted_characters.iterrows():
             self.tree_page2.insert("", "end", values=[row[col] for col in headings])
 
-
+# ---------------------------------------------------------------------
+# FUNCTION: Clear boxes
+# ---------------------------------------------------------------------
 
     def clear_boxes(self):
         # --- Lists all entry box data --- 
@@ -413,7 +422,11 @@ class GenshinSorter:
          # --- Deletes all entry box data --- 
         for options in tree_entryboxes:
             options.delete(0, END)
-       
+
+# ---------------------------------------------------------------------
+# FUNCTION: Search character data
+# ---------------------------------------------------------------------
+
     def search_character(self):
         #clears current rows in the treeview
         for row in self.tree_page2.get_children():
