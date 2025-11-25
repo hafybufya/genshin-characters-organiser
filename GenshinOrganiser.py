@@ -14,6 +14,7 @@ from matplotlib.figure import Figure # Also used for the figure creation
 # ---------------------------------------------------------------------
 # Defined colours used in program
 #  -> make colour scheme easier to change
+# -> currently Neuvillette's colour pallette
 # ---------------------------------------------------------------------
 
 colour_1 =  "#222437" 
@@ -66,10 +67,10 @@ class GenshinSorter:
         self.genshin_window.geometry("%dx%d+%d+%d" % (1300, 750, 100, 50)) # Width, height, xoffset, yoffset
         self.genshin_window.resizable(True, True) # Both width and height can be resized
 
-        #Stylising tkinter window
+        # --- Stylising tkinter window ---
         self.style = ttk.Style()
         self.style.theme_use("clam")  # Allows more customisation
-        self.style.configure("Treeview",  # Neuvillette's colour pallette from Genshin
+        self.style.configure("Treeview", 
                            background= colour_1,
                            foreground= colour_2,
                            fieldbackground = colour_1,
@@ -79,24 +80,27 @@ class GenshinSorter:
                       background=[('selected', '#2852B3')]) # Changes the color of selected text to #2852B3 (blue)
                                 #even hotter button stuff
         self.style.configure(
-            "Custom.TButton", #placing this style in all ttk buttons customises them like this 
+            "Custom.TButton", # Placing this style in all ttk buttons customises them like this 
             font=("Arial", 14, "bold"),
-            foreground="#F6F8F9",  #button text color
-            background="#253365",  #background button color
+            foreground="#F6F8F9",  # Button text color
+            background="#253365",  # Background button color
     )
-        # Pages stuff #all pages set as a frame so i could then set a color because i couldnt change the color of the window since it would keep following my evil mac settings
+        # --- Pages ---
+
+        # All pages set as a frame to allow setting bg colour
         self.page1 = tk.Frame(self.genshin_window, bg = colour_2) 
         self.page2 = tk.Frame(self.genshin_window, bg = colour_2)
         self.page3 = tk.Frame(self.genshin_window, bg = colour_2)
 
-        self.frame_page_1buttons = ttk.Frame(self.page1) #frame for my page 1 buttons
+        # --- Frame for all buttons ---
+        self.frame_page_1buttons = ttk.Frame(self.page1) # Page 1 buttons
         self.frame_page_1buttons.pack(side=BOTTOM, pady = 15)
-        self.frame_page_2buttons = ttk.Frame(self.page2) #frame for my page 2 buttons
+        self.frame_page_2buttons = ttk.Frame(self.page2) # Page 2 buttons
         self.frame_page_2buttons.pack(side=BOTTOM, pady = 15)
-        self.frame_page_3buttons = ttk.Frame(self.page3) #frame for my page tres buttons
+        self.frame_page_3buttons = ttk.Frame(self.page3) # Page 3 buttons
         self.frame_page_3buttons.pack(side=BOTTOM, pady = 15)
 
-        #using grids inside of a frame thats been packed is my fave cheeky thing
+        # --- Using grids inside of a frame ---
         self.page1_to_page2 = ttk.Button(self.frame_page_1buttons, text="Show Page 2", command=lambda: self.show_page(self.page2),style= 'Custom.TButton')
         self.page1_to_page2.grid(row = 0, column = 0) 
         self.page1_to_page3 = ttk.Button(self.frame_page_1buttons, text="Show Page 3", command=lambda: self.show_page(self.page3),style= 'Custom.TButton')
@@ -112,7 +116,9 @@ class GenshinSorter:
         self.page3_to_page_1 = ttk.Button(self.frame_page_3buttons, text="Show Page 1", command=lambda: self.show_page(self.page1), style= 'Custom.TButton')
         self.page3_to_page_1.grid(row = 0, column = 0)
 
-        #TITLES FOR PAGE 2 AND 3
+        # --- Title for pages 2 and 3 ---
+
+        # --- Page 2 ---
         self.page2_title = tk.Label(self.page2, text="SORT CHARACTERS", bg=colour_2 , font=("Ariel",30, "bold"))
         self.page2_title.pack(side= TOP)
         self.page2_search= tk.Label(self.page2, text= "You can search for: Name, Element, Star, Region and Weapon ;)",font=("Ariel",14, "bold"), bg=colour_2)
@@ -120,19 +126,20 @@ class GenshinSorter:
         self.page2_advice= tk.Label(self.page2, text= "Press 'Search' with the search box empty to get all characters",font=("Ariel",14, "bold"), bg=colour_2)
         self.page2_advice.pack(side=TOP)
 
+        # --- Page 3 ---
         self.page3_title = tk.Label(self.page3, text="EDIT CHARACTERS", font=("Ariel",30, "bold"), bg=colour_2)
         self.page3_title.pack(side= TOP)
         self.info_label= tk.Label(self.page3, text= "To view edits on page 2, close the window and reopen :D",font=("Ariel",14, "bold"), bg=colour_2)
         self.info_label.pack(side=TOP)
 
-        #This is a place holder ish error message for when boxes are empty for certain buttons
+        # --- Placeholder error message for when boxes are empty for certain buttons ---
         self.error_label_2 = tk.Label(self.page2, text="", font=("Ariel",15, "bold"), bg=colour_2 , fg=colour_1 )
         self.error_label_2.pack(side=BOTTOM)
 
         self.error_label_3 = tk.Label(self.page3, text="", font=("Ariel",15, "bold"), bg=colour_2 , fg=colour_1 )
         self.error_label_3.pack(side=BOTTOM)
 
-        #frame for editting entry boxes
+        # --- Frame for editting entry boxes ---
         self.frame_editting = tk.Frame(self.page3, bg=colour_2)
         self.frame_editting.pack(side=BOTTOM)
  
@@ -186,47 +193,62 @@ class GenshinSorter:
         self.weapon_entry = Entry(self.frame_editting, font=20, width=10, bg=colour_3)
         self.weapon_entry.grid(row=1, column=9)
 
-        #cutsey frame for character edits button stuff yurrr
+        #--- Frame for character edits buttons ---
         self.frame_buttons = ttk.Frame(self.page3)
         self.frame_buttons.pack(side=BOTTOM, pady = 20)
        
+        #--- Delete button ---
         self.delete_button = ttk.Button(self.frame_buttons, text="Delete", command=self.delete_character, style= 'Custom.TButton')
-        self.delete_button.grid(row= 0, column=3)#delete button
+        self.delete_button.grid(row= 0, column=3)
 
+        #--- Add character button ---
         self.add_button = ttk.Button(self.frame_buttons, text="Add", command=self.add_character, style= 'Custom.TButton')
-        self.add_button.grid(row =0, column = 2)#add character button
+        self.add_button.grid(row =0, column = 2)
 
+        #--- Select button ---
         self.select_button = ttk.Button(self.frame_buttons, text="Select record", command=self.select_character, style= 'Custom.TButton')
-        self.select_button.grid(row = 0 , column = 0)#select button
+        self.select_button.grid(row = 0 , column = 0)
 
+        #--- Clear button ---
         self.clear_button = ttk.Button(self.frame_buttons, text="Clear Boxes", command=self.clear_boxes, style= 'Custom.TButton')
-        self.clear_button.grid(row = 0 , column = 1) #clear button
+        self.clear_button.grid(row = 0 , column = 1) 
 
+        #--- Update button ---
         self.update_button = ttk.Button(self.frame_buttons, text="Update record", command=self.update_character, style= 'Custom.TButton')
-        self.update_button.grid(row = 0, column = 4)# update button
+        self.update_button.grid(row = 0, column = 4)
         
+        #--- Search button ---
         self.search_button = ttk.Button(self.page2, text="Search", command=self.search_character, style= 'Custom.TButton')
-        self.search_button.pack(side=BOTTOM)#search button 
+        self.search_button.pack(side=BOTTOM)
        
+        #--- Search button entry box ---
         self.search_entry = Entry(self.page2, width=35, bg=colour_3, font=18)
-        self.search_entry.pack(side=BOTTOM) #search button entry box yurrr
+        self.search_entry.pack(side=BOTTOM)
 
-        #INTERACTIVE PAGE 2 TINGS
+        #--- Interactive page 2 elements---
+
+        #--- Sort button ---
         self.sort_button = ttk.Button(self.page2, width=20, text="Sort", command=self.sort_characters, style= 'Custom.TButton')
-        self.sort_button.pack(side=TOP , anchor =E)  #sort button
+        self.sort_button.pack(side=TOP , anchor =E) 
 
-        #dropdown menu
+         #--- Drop down menu ---
         self.option = StringVar(self.page2)
-        self.dropdown_choices = ["--", "Name", "Level",'HP', "ATK"] #super leng options
-        self.option.set(self.dropdown_choices[0]) #automatically on "--"
+
+        #--- Dropdown menu options ---
+        self.dropdown_choices = ["--", "Name", "Level",'HP', "ATK"]
+        self.option.set(self.dropdown_choices[0]) # Automatically on "--"
         self.dropdown = OptionMenu(self.page2, self.option, *self.dropdown_choices)
-        self.dropdown.pack(side=TOP ,anchor = W) #anchored top left (idk my NESW)
+        self.dropdown.pack(side=TOP ,anchor = W) # Anchored top left 
         self.dropdown.config(width = 8)
         
-        #Adds treeview to both pages
-        #different treeviews for diff pages makes it easier so i can have them for diff things
-        self.tree_page2=self.add_treeview(self.page2)  #treeview here for searching and sorting and sorting
-        self.tree_page3= self.add_treeview(self.page3) #treeview here for edittig csv file
+        #--- Add treeview for both pages ---
+        # Different treeviews for each pages makes it easier -> serve different purposes
+
+        #--- Treeview here for searching and sorting ---
+        self.tree_page2=self.add_treeview(self.page2)
+
+        #--- Treeview here for editting csv file ---
+        self.tree_page3= self.add_treeview(self.page3)
 
     # ---------------------------------------------------------------------
     # FUNCTION: Add treeview 
@@ -434,23 +456,38 @@ class GenshinSorter:
     # ---------------------------------------------------------------------
 
     def search_character(self):
-        #clears current rows in the treeview
+
+        # --- Clears current rows in the treeview --- 
         for row in self.tree_page2.get_children():
             self.tree_page2.delete(row)
-            found= False #defined outside da loop 
-        query = self.search_entry.get().lower()#get the search query which is in the search entry box and lower cases it 
-        #reads the CSV and filters rows based on the query dun dun dunnnnn
-        #opens character.csv file
-        with open('genshinCharacters.csv') as characters:
+            found= False # Defined outside the loop 
+
+        # --- Get the search query and converts to lowercase ---
+        query = self.search_entry.get().lower()
+
+        # --- Treeview columns ---
+        columns = [
+            "Name", "Element", "Character Star", "Character Level",
+            "Max HP", "Base ATK", "Elemental Skill", "Elemental Burst",
+            "Region", "Weapon"
+        ]
+
+        # --- Searchable columns ---
+        searchable = ["Name", "Element", "Character Star", "Region", "Weapon"]
+
+        # --- Reads the CSV and filters rows based on the query ---
+        with open('genshinCharacters.csv') as characters:  # Opens character.csv file
             character_selected = csv.DictReader(characters, delimiter=',')
+          
+            # --- Checks if the query matches in certain rows and then appends to empty treeview ---
             for row in character_selected: 
-                #checks if the query matches in certain rows and then appends to empty treeview
-                #didnt include burst or skill coz literally no one would ever search by that
-                if query in row['Name'].lower() or query in row['Element'].lower() or query in row['Character Star'].lower() or query in row['Region'].lower() or query in row['Weapon'].lower():
-                    self.tree_page2.insert("", 0, values=(
-                        row['Name'], row['Element'], row['Character Star'], row['Character Level'], row['Max HP'], row['Base ATK'], row['Elemental Skill'], row['Elemental Burst'], row["Region"], row["Weapon"]
-                    ))
-                    found=True #set found as true if query found
+                
+                # --- Check if query matches ANY searchable column ---
+                if any(query in row[col].lower() for col in searchable):
+                    self.tree_page2.insert("", 0, values=[row[c] for c in columns])
+                    found=True # Set found as true if query found
+
+            # --- No match ---
             if not found:
                self.error_label_2.config(text="DOES NOT EXIST.")
                self.page2.after(3000, lambda: self.error_label_2.config(text=""))
@@ -468,93 +505,109 @@ class GenshinSorter:
         for options in tree_entryboxes:
             options.delete(0, END)
 
-        # Get selected row
+        # --- Get selected row --- 
         selected = self.tree.focus() # Focus = whats currently pressed on
         values = self.tree.item(selected, "values") # Grabs values associated with record
 
-        # Fill entry boxes using a loop
+        # --- Fill entry boxes using a loop ---
         for entry, value in zip(tree_entryboxes, values):
             entry.insert(0, value)
 
-    def add_character(self): #need this to show up on treeview too on page 2 maybe message to user to reload page to show addec charater to masterlist
-        if not (self.name_entry.get() and self.element_entry.get() and self.star_entry.get() and self.level_entry.get() and self.hp_entry.get() and self.atk_entry.get() and self.skill_entry.get() and self.burst_entry.get() and self.region_entry.get() and self.weapon_entry.get()):
-            # Check if all fields are filled #If any field is empty, show an error message and return
-            self.error_label_3.config(text="Please fill all fields!!.")
-            self.page3.after(3000, lambda: self.error_label_3.config(text="")) #error shown for only 3 seconds before dissappearing as text is reset to nothing
-            return  #stop the function from running
-          
-        if not (self.star_entry.get().isdigit() and self.level_entry.get().isdigit() and self.hp_entry.get().isdigit() and self.atk_entry.get().isdigit()):
-            self.error_label_3.config(text="'Star', 'Level' , 'Max HP' and 'Base ATK' should all be numbers.") #validation and makes sure number boxes have only numbers in them
-            self.page3.after(4000, lambda: self.error_label_3.config(text="")) #error shown for only 4 seconds before dissappearing as text is reset to nothing
-            return  #stop the function from running
-        
-        self.tree.insert(parent='', index='end', text='',values= (self.name_entry.get(), self.element_entry.get(), self.star_entry.get(), self.level_entry.get(), self.hp_entry.get(), self.atk_entry.get(), self.skill_entry.get(), self.burst_entry.get(), self.region_entry.get(), self.weapon_entry.get())) #added to the end
-        #deletes all entry box data
+    # ---------------------------------------------------------------------
+    # FUNCTION: Add character data
+    # ---------------------------------------------------------------------
+
+    def add_character(self):
+
+        # --- Lists all entry box data --- 
         tree_entryboxes = (self.name_entry,self.element_entry, self.star_entry, self.level_entry,
-                   self.hp_entry,self.atk_entry,self.skill_entry, self.burst_entry, self.burst_entry,self.region_entry, self.weapon_entry )
+                   self.hp_entry,self.atk_entry,self.skill_entry, self.burst_entry,self.region_entry, self.weapon_entry )
+        
+        # --- Lists all numeric entry box data --- 
+        numeric_traits = [self.star_entry, self.level_entry, self.hp_entry, self.atk_entry]
+        
+        values = [tree_entrybox.get() for tree_entrybox in tree_entryboxes]
+
+        # --- Validation to ensure all fields are filled ---
+        if any(v == "" for v in values): # Check if all fields are filled 
+            self.error_label_3.config(text="Please fill all fields!!.") #If any field is empty, show an error message and return
+            self.page3.after(3000, lambda: self.error_label_3.config(text=""))  # Error shown for only 3 seconds before dissappearing as text is reset to nothing
+            return  # Stop the function from running 
+
+        # --- Validation to ensure numeric fields are numeric ---
+        numeric_values = [entry.get() for entry in numeric_traits]
+        if any(not nv.isdigit() for nv in numeric_values):
+            self.error_label_3.config(text="'Star', 'Level' , 'Max HP' and 'Base ATK' should all be numbers.") 
+            self.page3.after(3000, lambda: self.error_label_3.config(text="")) # Error shown for only 3 seconds before dissappearing as text is reset to nothing
+            return   #Stop the function from running
+        
+        self.tree.insert("", "end", values=values)
+    
+        # --- Deletes all entry box data --- 
+        tree_entryboxes = (self.name_entry,self.element_entry, self.star_entry, self.level_entry,
+                   self.hp_entry,self.atk_entry,self.skill_entry,  self.burst_entry,self.region_entry, self.weapon_entry )
         for options in tree_entryboxes:
             options.delete(0, END)
-        column_a_list = [] #this is the name column
-        column_b_list = []
-        column_c_list = []
-        column_d_list = []
-        column_e_list = []
-        column_f_list = []
-        column_g_list = []
-        column_h_list = []
-        column_i_list = []
-        column_j_list = [] #finally this is thw weapon column
 
-        for child in self.tree.get_children():
-            column_a_list.append(self.tree.item(child)["values"][0])  #counts from name column not the ghost column         
-            column_b_list.append(self.tree.item(child)["values"][1])  
-            column_c_list.append(self.tree.item(child)["values"][2])  
-            column_d_list.append(self.tree.item(child)["values"][3])
-            column_e_list.append(self.tree.item(child)["values"][4])            
-            column_f_list.append(self.tree.item(child)["values"][5])  
-            column_g_list.append(self.tree.item(child)["values"][6])  
-            column_h_list.append(self.tree.item(child)["values"][7]) 
-            column_i_list.append(self.tree.item(child)["values"][8])            
-            column_j_list.append(self.tree.item(child)["values"][9])  #again this is the weapon column
-        
-        #putting values into a dictionairy with the headings as the key and the rows containing data from the rows as the values
-        full_treeview_data_dict = {'Name': column_a_list, 'Element': column_b_list, 'Character Star': column_c_list, 'Character Level': column_d_list, "Max HP":column_e_list, "Base ATK": column_f_list, "Elemental Skill": column_g_list, "Elemental Burst": column_h_list, "Region":column_i_list, "Weapon": column_j_list}
-        treeview_df = pd.DataFrame.from_dict(full_treeview_data_dict)
+        # --- Export updated CSV ---
+        all_rows = [self.tree.item(child)["values"] for child in self.tree.get_children()]
+        treeview_df = pd.DataFrame(all_rows, columns=[
+            "Name", "Element", "Character Star", "Character Level",
+            "Max HP", "Base ATK", "Elemental Skill", "Elemental Burst",
+            "Region", "Weapon"
+        ])
         treeview_df.to_csv("genshinCharacters.csv", index = False)
+
+        # --- Sucess message ---
         self.error_label_3.config(text="CHARACTER ADDED")
         self.page3.after(3000, lambda: self.error_label_3.config(text="")) #error shown for only 3 secondsssss before dissappearing as text is reset to nothing
-        
-class IntroPage(GenshinSorter): #inheritance yurrrrrrrrrrrrrrrr
+
+
+# ---------------------------------------------------------------------
+# CLASS: First page of program
+# ---------------------------------------------------------------------
+
+class IntroPage(GenshinSorter): # Inheritance
     def __init__(self, genshin_window):
         super().__init__(genshin_window)
-        #title and label fo rpage 1
+        # --- Title and label of page 1 ---
         self.page1_title = tk.Label(self.page1, text="HAFSA'S GENSHIN ORGANISER", font=('Arial', 30, "bold"),bg=colour_2)
         self.page1_title.pack(side= TOP, pady=20, expand=True)
         self.theme_label = tk.Label(self.page1, text="Current Theme: Neuvillette", font=('Arial', 16),bg=colour_2)
         self.theme_label.pack(side= BOTTOM, pady=20, expand=True)
-        #Character count #extraStats too good
+
+        # --- Character count label ---
         self.character_count_label = tk.Label(self.page1, text= f"TOTAL CHARACTER COUNT: {Character.character_count}" , font=('Arial', 15, "bold"), bg=colour_2) 
         self.character_count_label.pack(pady=20)
-        #cheeky plot for elements on the homepage oui oui
-        character_df =Character.make_characters_csv()  #finally get to use the csv i called yurrrrr
-        #elementcounts checks the number of times something comes up in the csv
-        element_counts = character_df['Element'].value_counts() #chose elements since theyre my fave cheeky attribute
-        element_index = element_counts.index.tolist()  #converts both to a list
+        
+        # --- Plot for elements on the homepage ---
+        character_df =Character.make_characters_csv() 
+
+        # --- Element counts checks the number of times something comes up in the csv ---
+        element_counts = character_df['Element'].value_counts() 
+        element_index = element_counts.index.tolist()  # Converts both to a list
         element_count = element_counts.values.tolist() 
-        frameChart = tk.Frame(self.page1) #puts the graph on page 1
+
+        # --- Puts the graph on page 1 ---
+        frameChart = tk.Frame(self.page1) 
         frameChart.pack()
-        #creates the matplotlib figure and axes
-        fig = Figure(figsize=(4,4))  #sets the figure size
-        ax = fig.add_subplot(111)  #add a subplot
-        fig.patch.set_facecolor(colour_2)  #set the background of the figure to the lightblue ting
-        #plots the pie chart
+
+        # --- Creates the matplotlib figure and axes ---
+        fig = Figure(figsize=(4,4))  # Sets the figure size
+        ax = fig.add_subplot(111)  # Add a subplot
+
+        # --- Set the background of the figure to colour 2 ---
+        fig.patch.set_facecolor(colour_2) 
+        
+        # --- Plots the pie chart ---
         ax.pie(element_count, labels=element_index, autopct='%0.0f%%', startangle=180)
-        element_chart = FigureCanvasTkAgg(fig, frameChart)#embeds the figure into tkinter 
+        element_chart = FigureCanvasTkAgg(fig, frameChart)# Embeds the figure into tkinter 
         element_chart.get_tk_widget().pack(anchor="center") 
 
 
 if __name__ == "__main__":
-    # Creates CSV if genshinCharacaters.csv doesnt exist
+
+    # --- Creates CSV if genshinCharacaters.csv doesnt exist ---
     characters = [ 
         Character("Traveller", "Anemo", 4,1, 911, 17, "Gale Blade", "Dandelion Breeze", "Mondstadt", "Sword"),
         Character("Kaeya", "Cyro", 4, 1,975, 18, "Frostgnaw", "Glacial Waltz", "Mondstadt", "Sword"),
@@ -562,10 +615,15 @@ if __name__ == "__main__":
         Character("Neuvillette", "Hydro", 5, 1, 900, 20, "O Tears, I Shall Repay", "O Tides, I Have Returned", "Fontaine", "Catalyst")
     ]
 
-
-    Character.make_characters_csv() #needed to  be called like so important esp if no character.csv file exists for the first call of the program
-    Character.character_count = len(pd.read_csv('genshinCharacters.csv')) #calculating the length of the csv file to see the total character count
-    genshin_window = tk.Tk() #main  app so crazy i can call this an app yurr
-    intro_page = IntroPage(genshin_window)  #using IntroPage instead of GenshinSorter 
-    intro_page.show_page(intro_page.page1) #shows the first page initially
-    genshin_window.mainloop() #runs the application
+    # --- If no character csv exists --
+    Character.make_characters_csv() 
+    # --- Calculating the length of the csv file to see the total character count --
+    Character.character_count = len(pd.read_csv('genshinCharacters.csv')) 
+ 
+    # --- Main app --    
+    genshin_window = tk.Tk() 
+    # --- Shows the first page initially -- 
+    intro_page = IntroPage(genshin_window)  
+    # --- Runs the application -- 
+    intro_page.show_page(intro_page.page1) 
+    genshin_window.mainloop()
