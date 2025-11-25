@@ -228,11 +228,33 @@ class GenshinSorter:
         self.tree_page2=self.add_treeview(self.page2)  #treeview here for searching and sorting and sorting
         self.tree_page3= self.add_treeview(self.page3) #treeview here for edittig csv file
 
+    # ---------------------------------------------------------------------
+    # FUNCTION: Add treeview 
+    # ---------------------------------------------------------------------
+
     def add_treeview(self, page):
         """Add the Treeview to a given page in this case only 2 and 3"""
         
         TableMargin = Frame(page, width=500)
         TableMargin.pack(side=TOP)
+
+        # Column definitions
+        columns = [
+            ("Name", 90),
+            ("Element", 70),
+            ("Character Star", 50),
+            ("Character Level", 50),
+            ("Max HP", 60),
+            ("Base ATK", 70),
+            ("Elemental Skill", 150),
+            ("Elemental Burst", 200),
+            ("Region", 100),
+            ("Weapon", 75),
+        ]
+
+        # Extract only names for the treeview config
+        column_names = [c[0] for c in columns]
+
 
         self.tree = ttk.Treeview(
             TableMargin,
@@ -240,35 +262,19 @@ class GenshinSorter:
             height=400,
             selectmode="extended",
         )
-        with open('genshinCharacters.csv') as characters:
-            read_csv = csv.DictReader(characters, delimiter=',')
-            for row in read_csv:
-                #rows passed as a tuple into values which will populate the treeview
-                self.tree.insert("", "end", values= (row['Name'], row['Element'], row['Character Star'], row["Character Level"], row["Max HP"],
-                          row["Base ATK"], row["Elemental Skill"], row["Elemental Burst"], row["Region"], row["Weapon"]))
 
-        self.tree.heading("Name", text="Name", anchor="c")
-        self.tree.heading("Element", text="Element", anchor="c")
-        self.tree.heading("Character Star", text="Star", anchor="c")
-        self.tree.heading("Character Level", text="Level", anchor="c")
-        self.tree.heading("Max HP", text="HP", anchor="c")
-        self.tree.heading("Base ATK", text="Base ATK", anchor="c")
-        self.tree.heading("Elemental Skill", text="Skill", anchor="c")
-        self.tree.heading("Elemental Burst", text="Burst", anchor="c")
-        self.tree.heading("Region", text="Region", anchor="c")
-        self.tree.heading("Weapon", text="Weapon", anchor="c")
-        #treeview column properties
-        self.tree.column("#0", stretch=NO, minwidth=15, width=0, anchor="c") #ghost column ignore
-        self.tree.column("#1", stretch=NO, minwidth=15, width=90, anchor="c")
-        self.tree.column("#2", stretch=NO, minwidth=15, width=70, anchor="c")
-        self.tree.column("#3", stretch=NO, minwidth=15, width=50, anchor="c")
-        self.tree.column("#4", stretch=NO, minwidth=15, width=50, anchor="c")
-        self.tree.column("#5", stretch=NO, minwidth=15, width=60, anchor="c")
-        self.tree.column("#6", stretch=NO, minwidth=15, width=70, anchor="c")
-        self.tree.column("#7", stretch=NO, minwidth=15, width=150, anchor="c")
-        self.tree.column("#8", stretch=NO, minwidth=15, width=200, anchor="c")
-        self.tree.column("#9", stretch=NO, minwidth=15, width=100, anchor="c")
-        self.tree.column("#10", stretch=NO, minwidth=15, width=75, anchor="c")
+        # --- Load CSV rows ---
+        with open("genshinCharacters.csv") as f:
+            # Rows passed as a tuple into values which will populate the treeview
+            for row in csv.DictReader(f):
+                self.tree.insert("", "end", values=[row[col] for col in column_names])
+
+        # --- Configure headings and column widths in one loop ---
+        self.tree.column("#0", width=0, stretch=NO)  # Ghost column
+        for i, (name, width) in enumerate(columns, start=1):
+            self.tree.heading(name, text=name.split()[-1] if name != "Name" else "Name", anchor="c")
+            self.tree.column(f"#{i}", width=width, stretch=NO, anchor="c")
+
         self.tree.pack() 
         return self.tree
 
@@ -281,9 +287,9 @@ class GenshinSorter:
         #packs the selected page to fill the whole window
         page.pack(fill="both", expand=True)
 
-# ---------------------------------------------------------------------
-# FUNCTION: Update character data
-# ---------------------------------------------------------------------
+    # ---------------------------------------------------------------------
+    # FUNCTION: Update character data
+    # ---------------------------------------------------------------------
 
     def update_character(self):
         """Connected to the update button and it pastes the data user has selected so it can be updated"""  
@@ -294,7 +300,7 @@ class GenshinSorter:
         self.hp_entry, self.atk_entry, self.skill_entry, self.burst_entry,
         self.region_entry, self.weapon_entry
     ] 
-        # For validating numeric fields
+        # --- List of numeric character trait lists ---
         numeric_traits = [self.star_entry, self.level_entry, self.hp_entry, self.atk_entry]
         
         # --- Validate empty fields --- 
@@ -342,9 +348,9 @@ class GenshinSorter:
         self.error_label_3.config(text="RECORD UPDATED.")
         self.page3.after(3000, lambda: self.error_label_3.config(text=""))
 
-# ---------------------------------------------------------------------
-# FUNCTION: Delete character data
-# ---------------------------------------------------------------------
+    # ---------------------------------------------------------------------
+    # FUNCTION: Delete character data
+    # ---------------------------------------------------------------------
 
     def delete_character(self):
         
@@ -369,9 +375,9 @@ class GenshinSorter:
         # Error shown for only 3 seconds before dissappearing as text is reset to nothing 
         self.page3.after(3000, lambda: self.error_label_3.config(text=""))
 
-# ---------------------------------------------------------------------
-# FUNCTION: Sort character data
-# ---------------------------------------------------------------------
+    # ---------------------------------------------------------------------
+    # FUNCTION: Sort character data
+    # ---------------------------------------------------------------------
 
     def sort_characters(self):
         
@@ -411,9 +417,9 @@ class GenshinSorter:
         for _, row in sorted_characters.iterrows():
             self.tree_page2.insert("", "end", values=[row[col] for col in headings])
 
-# ---------------------------------------------------------------------
-# FUNCTION: Clear boxes
-# ---------------------------------------------------------------------
+    # ---------------------------------------------------------------------
+    # FUNCTION: Clear boxes
+    # ---------------------------------------------------------------------
 
     def clear_boxes(self):
         # --- Lists all entry box data --- 
@@ -423,9 +429,9 @@ class GenshinSorter:
         for options in tree_entryboxes:
             options.delete(0, END)
 
-# ---------------------------------------------------------------------
-# FUNCTION: Search character data
-# ---------------------------------------------------------------------
+    # ---------------------------------------------------------------------
+    # FUNCTION: Search character data
+    # ---------------------------------------------------------------------
 
     def search_character(self):
         #clears current rows in the treeview
@@ -449,6 +455,9 @@ class GenshinSorter:
                self.error_label_2.config(text="DOES NOT EXIST.")
                self.page2.after(3000, lambda: self.error_label_2.config(text=""))
 
+    # ---------------------------------------------------------------------
+    # FUNCTION: Select character data
+    # ---------------------------------------------------------------------
 
     def select_character(self):
        # --- Lists all entry box data --- 
