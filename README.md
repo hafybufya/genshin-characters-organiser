@@ -65,6 +65,15 @@ class IntroPage{
 
 ```
 
+
+## ✅ Page 1: Home:
+
+## Page 2:
+
+## Page 3:
+
+
+
 ## 🛠️ Installation
 
 Python 3.10 or newer to run python files
