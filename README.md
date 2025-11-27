@@ -74,7 +74,6 @@ Python modules used:
 * matplotlib – Plotting graphs.
 * tkinter - creating window.
 * os – Checking if files exist.
-* unittest – Running unit tests.
 
 You can install required packages with:
 
