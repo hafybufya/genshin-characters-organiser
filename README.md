@@ -1,14 +1,11 @@
 # GenshinCharactersOrganiser
 
-[Trying to check if I can merge changes into main branch]
-
-This project complied all characters that users input from Genshin. This was created and submitted for my final Fundamental of Programming Assignment Year1.
-
+This project was created for my final assignment with the brief to create a file manager. I selected Genshin as my organisational topic of choice and developed experience and confidence in using tkinter. 
 
 
 ## UML DIAGRAMS
 
-I used mermaid live editor to make a frame for my three classes:
+I used Mermaid Live Editor to make a frame for my three classes:
 
 ```
 mermaid
@@ -51,6 +48,12 @@ class IntroPage{
     graph e.g. piechart
 }
 ```
+## Improvements and Future Improvements
+Some of the key improvements from my submission last year are:
+* Improved and consistent commenting
+* Use of for loops to increase readability a of code
+An improvement to incorporate next is:
+* To reduce blocks of repeated code present in functions
 
 ## 📁 Project Structure
 
@@ -58,10 +61,8 @@ class IntroPage{
 
 ├── GenshinOrganiser.py
 ├── genshinCharacters.csv
-├── requirements.txt
 └── README.md
-└── .circle.ci/
-    └── config.yml
+
 
 ```
 
@@ -79,14 +80,20 @@ class IntroPage{
 Python 3.10 or newer to run python files
 
 Python modules used: 
+* csv - used to load csv for treeview.
 * pandas – reading and handling CSV files.
-* matplotlib – plotting graphs.
+* matplotlib – plotting piechart.
 * tkinter - creating window.
-* os – Checking if files exist.
+* os – checking if files exist.
+
 
 You can install required packages with:
 
 ```
-pip install pandas matplotlib
+pip install csv, pandas, matplotlib, tkinter, os
 
 ```
+
+## 📄 License
+This project is open source and available under the [MIT License](https://github.com/hafybufya/genshin-characters-organiser/blob/main/LICENSE).
+
