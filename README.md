@@ -52,6 +52,7 @@ class IntroPage{
 Some of the key improvements from my submission last year are:
 * Improved and consistent commenting
 * Use of for loops to increase readability a of code
+
 An improvement to incorporate next is:
 * To reduce blocks of repeated code present in functions
 
