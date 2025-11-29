@@ -89,7 +89,7 @@ Users can:
 
 ## Page 3: Edit Page:
 
-![Final page of program](images/page2.png)
+![Final page of program](images/page3.png)
 
 Users can:
 * Edit characters
