@@ -79,8 +79,8 @@ class IntroPage{
 Python 3.10 or newer to run python files
 
 Python modules used: 
-* pandas – Reading and handling CSV files.
-* matplotlib – Plotting graphs.
+* pandas – reading and handling CSV files.
+* matplotlib – plotting graphs.
 * tkinter - creating window.
 * os – Checking if files exist.
 
