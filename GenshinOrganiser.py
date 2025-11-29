@@ -627,3 +627,4 @@ if __name__ == "__main__":
     # --- Runs the application -- 
     intro_page.show_page(intro_page.page1) 
     genshin_window.mainloop()
+
