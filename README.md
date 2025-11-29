@@ -77,7 +77,8 @@ Users can:
 * See the distribution of elements of character they own
 * See the current colour theme
 
-## Page 2: Search and Filter page:
+
+## Page 2: Search and Filter page:
 
 ![Second page users see](images/page2.png)
 
