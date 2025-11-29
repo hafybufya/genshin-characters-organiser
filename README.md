@@ -72,12 +72,29 @@ An improvement to incorporate next is:
 
 ![Page users first see](images/page1.png)
 
-## Page 2:
+Users can:
+* Get total character count
+* See the distribution of elements of character they own
+* See the current colour theme
 
-(images/page1.png)
+## Page 2: Search and Filter page:
 
-## Page 3:
+![Second page users see](images/page2.png)
 
+Users can:
+* Sort character
+* Search for characters
+* Filters based on different character features
+
+## Page 3: Edit Page:
+
+![Final page of program](images/page2.png)
+
+Users can:
+* Edit characters
+* Delete characters
+* Add characters
+* Update character records
 
 
 ## 🛠️ Installation
