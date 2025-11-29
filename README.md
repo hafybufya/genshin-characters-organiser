@@ -70,7 +70,7 @@ An improvement to incorporate next is:
 
 ##  Page 1: Home:
 
-[Page users first see](images/page1.png)
+![Page users first see](images/page1.png)
 
 ## Page 2:
 
